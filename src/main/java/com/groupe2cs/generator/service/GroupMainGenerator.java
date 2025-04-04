@@ -21,9 +21,6 @@ public class GroupMainGenerator {
     private final DtoRequestGeneratorService dtoRequestGeneratorService;
     private final DtoResponseGeneratorService dtoResponseGeneratorService;
     private final MapperGeneratorService mapperGenerator;
-    private final ControllerGeneratorService controllerGenerator;
-    private final QueryGeneratorService queryGeneratorService;
-    private final QueryHandlerGeneratorService queryHandlerGenerator;
     private final ExceptionGeneratorService exceptionGeneratorService;
     private final RepositoryGeneratorService repositoryGeneratorService;
     private final BaseIntegrationTestGeneratorService baseIntegrationTestGeneratorService;
@@ -32,6 +29,7 @@ public class GroupMainGenerator {
     private final ListQueryHandlerGeneratorService listQueryHandlerGeneratorService;
     private final ListControllerGeneratorService listControllerGeneratorService;
     private final PagedResponseGeneratorService pagedResponseGeneratorService;
+    private final CreateControllerGeneratorService createControllerGeneratorService;
 
 
     private EntityDefinition loadFromFileDefinition() {
@@ -54,10 +52,7 @@ public class GroupMainGenerator {
             ProjectionGeneratorService projectionGenerator,
             DtoRequestGeneratorService dtoRequestGeneratorService,
             MapperGeneratorService mapperGenerator,
-            ControllerGeneratorService controllerGenerator,
             DtoResponseGeneratorService dtoResponseGeneratorService,
-            QueryGeneratorService queryGeneratorService,
-            QueryHandlerGeneratorService queryHandlerGenerator,
             ExceptionGeneratorService exceptionGeneratorService,
             RepositoryGeneratorService repositoryGeneratorService,
             BaseIntegrationTestGeneratorService baseIntegrationTestGeneratorService,
@@ -65,7 +60,8 @@ public class GroupMainGenerator {
             ListQueryGeneratorService listQueryGeneratorService,
             ListQueryHandlerGeneratorService  listQueryHandlerGeneratorService,
             ListControllerGeneratorService listControllerGeneratorService,
-            PagedResponseGeneratorService pagedResponseGeneratorService
+            PagedResponseGeneratorService pagedResponseGeneratorService,
+            CreateControllerGeneratorService createControllerGeneratorService
     ) {
         this.properties = properties;
         this.commandGenerator = commandGenerator;
@@ -75,10 +71,7 @@ public class GroupMainGenerator {
         this.projectionGenerator = projectionGenerator;
         this.dtoRequestGeneratorService = dtoRequestGeneratorService;
         this.mapperGenerator = mapperGenerator;
-        this.controllerGenerator = controllerGenerator;
         this.dtoResponseGeneratorService = dtoResponseGeneratorService;
-        this.queryGeneratorService = queryGeneratorService;
-        this.queryHandlerGenerator = queryHandlerGenerator;
         this.exceptionGeneratorService = exceptionGeneratorService;
         this.repositoryGeneratorService = repositoryGeneratorService;
         this.baseIntegrationTestGeneratorService = baseIntegrationTestGeneratorService;
@@ -87,6 +80,7 @@ public class GroupMainGenerator {
         this.listQueryHandlerGeneratorService = listQueryHandlerGeneratorService;
         this.listControllerGeneratorService = listControllerGeneratorService;
         this.pagedResponseGeneratorService = pagedResponseGeneratorService;
+        this.createControllerGeneratorService = createControllerGeneratorService;
     }
 
     public Flux<ApiResponseDto> generateStreaming(EntityDefinitionDTO definitionDto) {
@@ -113,11 +107,9 @@ public class GroupMainGenerator {
                 commandGenerator.generate(definition, outputDir);
 
                 emit(sink, "Generating Queries...");
-              //  queryGeneratorService.generate(definition, outputDir);
                 listQueryGeneratorService.generate(definition, outputDir);
 
                 emit(sink, "Generating Query Handlers...");
-              //  queryHandlerGenerator.generate(definition, outputDir);
                 listQueryHandlerGeneratorService.generate(definition, outputDir);
 
                 emit(sink, "Generating DTO Requests...");
@@ -134,8 +126,8 @@ public class GroupMainGenerator {
                 projectionGenerator.generate(definition, outputDir);
 
                 emit(sink, "Generating Controllers...");
-//                controllerGenerator.generate(definition, outputDir);
                 listControllerGeneratorService.generate(definition, outputDir);
+                createControllerGeneratorService.generate(definition, outputDir);
 
                 emit(sink, "Generating Repositories...");
                 repositoryGeneratorService.generate(definition, outputDir);

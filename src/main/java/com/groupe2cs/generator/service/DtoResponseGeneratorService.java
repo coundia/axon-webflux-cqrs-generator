@@ -26,7 +26,7 @@ public class DtoResponseGeneratorService {
         context.put("package", Utils.getPackage(outputDir));
 
         var fields = definition.getFields();
-        context.put("fields", FieldTransformer.transform(fields, definition.getName()));
+        context.put("fields", fields);
 
         Set<String> imports = new LinkedHashSet<>();
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");

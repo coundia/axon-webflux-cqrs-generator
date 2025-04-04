@@ -34,6 +34,7 @@ public class MapperGeneratorService {
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getDomainPackage()) + ".*");
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getEntityPackage()) + ".*");
+        imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getCommandPackage()) + ".*");
 
         context.put("imports", imports);
 

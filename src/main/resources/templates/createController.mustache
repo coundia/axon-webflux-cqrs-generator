@@ -1,0 +1,48 @@
+package {{package}};
+
+import {{mapperPackage}}.{{name}}Mapper;
+import {{commandPackage}}.Create{{name}}Command;
+import {{dtoPackage}}.{{name}}Request;
+import {{dtoPackage}}.{{name}}Response;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.CompletableFuture;
+
+@RestController
+@RequestMapping("/api/v1/commands/{{nameLowercase}}")
+@Tag(name = "{{name}} Controller", description = "Endpoints for managing {{nameLowercase}}s")
+@Slf4j
+public class Add{{name}}Controller {
+
+private final CommandGateway commandGateway;
+
+public Add{{name}}Controller(@Lazy CommandGateway commandGateway) {
+this.commandGateway = commandGateway;
+}
+
+@PostMapping("")
+@Operation(summary = "Add a new {{nameLowercase}}", description = "Creates a new {{nameLowercase}} and returns the created entity")
+public CompletableFuture<ResponseEntity<{{name}}Response>> add{{name}}(@RequestBody {{name}}Request {{nameLowercase}}Request) {
+	Create{{name}}Command create{{name}}Command = {{name}}Mapper.toCommand({{nameLowercase}}Request);
+	return commandGateway.send(create{{name}}Command)
+	.thenApply(id -> {
+	log.info("{{name}} created successfully with ID: {}", id);
+	{{name}}Response {{nameLowercase}}Response = new {{name}}Response(
+	{{#fields}}
+		{{nameLowercase}}Request.get{{nameCapitalized}}(){{^last}},{{/last}}
+	{{/fields}}
+	);
+	return ResponseEntity.ok({{nameLowercase}}Response);
+	})
+	.exceptionally(ex -> {
+	log.error("Failed to create {{nameLowercase}}: {}", ex.getMessage());
+	return ResponseEntity.internalServerError().build();
+	});
+	}
+	}

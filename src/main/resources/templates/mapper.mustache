@@ -8,15 +8,23 @@ public class {{name}}Mapper {
 
 public static {{name}}Response toResponse({{name}} entity) {
 return new {{name}}Response(
-{{#fields}}            {{entity}}{{nameCapitalized}}.create(entity.get{{nameCapitalized}}()){{^last}},{{/last}}
+{{#fields}}             entity.get{{nameCapitalized}}(){{^last}},{{/last}}
 {{/fields}}
 );
 }
 
 public static {{name}} toEntity({{name}}Request request) {
 return new {{name}}(
-{{#fields}}            request.get{{nameCapitalized}}().value(){{^last}},{{/last}}
+{{#fields}}            request.get{{nameCapitalized}}(){{^last}},{{/last}}
 {{/fields}}
 );
 }
+
+public static Create{{name}}Command toCommand({{name}}Request request) {
+return new Create{{name}}Command(
+{{#fields}}            {{entity}}{{nameCapitalized}}.create(request.get{{nameCapitalized}}()){{^last}},{{/last}}
+{{/fields}}
+);
+}
+
 }
