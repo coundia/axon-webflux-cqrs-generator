@@ -10,26 +10,16 @@ public class Utils {
     }
 
     public static String getPackage(String fullPath) {
-        Path path = Paths.get(fullPath).normalize();
+        String normalized = fullPath.replace("\\", "/");
 
-        int javaIndex = -1;
-        for (int i = 0; i < path.getNameCount(); i++) {
-            if (path.getName(i).toString().equals("java")) {
-                javaIndex = i;
-                break;
-            }
+        int index = normalized.indexOf("/src/main/java/");
+        if (index >= 0) {
+            String packagePath = normalized.substring(index + "/src/main/java/".length());
+            return packagePath.replace("/", ".");
         }
 
-        Path packagePath;
-        if (javaIndex != -1 && javaIndex + 1 < path.getNameCount()) {
-            packagePath = path.subpath(javaIndex + 1, path.getNameCount());
-        } else {
-            packagePath = path;
-        }
-
-        return packagePath.toString().replace("/", ".").replace("\\", ".");
+        return normalized.replace("/", ".");
     }
-
 
     public static Object lowerFirst(String name) {
         return Character.toLowerCase(name.charAt(0)) + name.substring(1);

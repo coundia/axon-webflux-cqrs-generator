@@ -27,11 +27,13 @@ public class MapperGeneratorService {
 
         var fields = definition.getFields();
         context.put("fields", FieldTransformer.transform(fields, definition.getName()));
+        context.put("entity", definition.getName());
 
         Set<String> imports = new LinkedHashSet<>();
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getDtoPackage()) + ".*");
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getDomainPackage()) + ".*");
+        imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getEntityPackage()) + ".*");
 
         context.put("imports", imports);
 

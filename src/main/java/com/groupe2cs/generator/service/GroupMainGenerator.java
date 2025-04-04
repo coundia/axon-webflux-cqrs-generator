@@ -128,7 +128,7 @@ public class GroupMainGenerator {
                 pagedResponseGeneratorService.generate(definition, outputDir);
 
                 emit(sink, "Generating Mappers...");
-              //  mapperGenerator.generate(definition, outputDir);
+                mapperGenerator.generate(definition, outputDir);
 
                 emit(sink, "Generating Projections...");
                 projectionGenerator.generate(definition, outputDir);

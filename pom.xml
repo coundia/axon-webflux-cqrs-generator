@@ -9,9 +9,9 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.groupe2cs</groupId>
-	<artifactId>spring-axon-cqrs-generator</artifactId>
+	<artifactId>axon-cqrs-generator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>vo</name>
+	<name>cqrs-generator</name>
 	<description>Generator  CQRS project for Spring Boot</description>
 	<url/>
 	<licenses>

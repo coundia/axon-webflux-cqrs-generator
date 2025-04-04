@@ -3,7 +3,7 @@ Accept: application/x-ndjson
 Content-Type: application/json
 
 {
-    "outputDir": "/Users/pcoundia/projects/spring-microservices-starter/products-command/src/main/java/com/generated/sales",
+    "outputDir": "/Users/pcoundia/projects/spring-axon-rabbitmq-webflux-starter/src/main/java/sales",
     "definition": {
       "name": "Sale",
       "fields": [

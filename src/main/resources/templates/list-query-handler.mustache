@@ -3,6 +3,7 @@ package {{package}};
 {{#imports}}
 import {{.}};
 {{/imports}}
+import java.util.List;
 
 @Component
 public class List{{entity}}QueryHandler {
@@ -14,17 +15,24 @@ this.{{entityLower}}Repository = {{entityLower}}Repository;
 }
 
 @QueryHandler
-public Mono<{{entity}}PagedResponse<{{entity}}Response>> handle(List{{entity}}Query query) {
+public Mono<{{entity}}PagedResponse> handle(List{{entity}}Query query) {
 	int limit = (int) query.getLimit();
 	int offset = (int) (query.getPage() * query.getLimit());
 
 	Mono<Long> totalElements = {{entityLower}}Repository.findAll().count();
-		Mono<List<{{entity}}>> items = {{entityLower}}Repository.findAllByPage(limit, offset).collectList();
+	Mono<List<{{entity}}>> items = {{entityLower}}Repository.findAllByPage(limit, offset).collectList();
 
 		return Mono.zip(items, totalElements)
-		.map(tuple ->{{entity}}PagedResponse.from(
-		tuple.getT1(), query.getPage(), query.getLimit(), tuple.getT2()
-		));
- }
+		.map(tuple -> {
+		List<{{entity}}Response> responses = tuple.getT1().stream()
+			.map({{entity}}Mapper::toResponse)
+			.toList();
 
+			return {{entity}}PagedResponse.from(
+			responses,
+			query.getPage(),
+			query.getLimit(),
+			tuple.getT2()
+			);
+	});
 }

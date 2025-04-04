@@ -8,14 +8,14 @@ public class {{name}}Mapper {
 
 public static {{name}}Response toResponse({{name}} entity) {
 return new {{name}}Response(
-{{#fields}}            entity.{{name}}(){{^last}},{{/last}}
+{{#fields}}            {{entity}}{{nameCapitalized}}.create(entity.get{{nameCapitalized}}()){{^last}},{{/last}}
 {{/fields}}
 );
 }
 
 public static {{name}} toEntity({{name}}Request request) {
 return new {{name}}(
-{{#fields}}            request.{{name}}(){{^last}},{{/last}}
+{{#fields}}            request.get{{nameCapitalized}}().value(){{^last}},{{/last}}
 {{/fields}}
 );
 }
