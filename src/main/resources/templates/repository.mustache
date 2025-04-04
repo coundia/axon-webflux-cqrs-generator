@@ -13,6 +13,8 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface {{name}}Repository extends ReactiveCrudRepository<{{name}}, String> {
 
+Flux<{{name}}> findAllByNameContainingIgnoreCase(String name);
+
 @Query("SELECT * FROM {{nameLower}}s ORDER BY name LIMIT :limit OFFSET :offset")
 Flux<{{name}}> findAllByPage(int limit, int offset);
 
@@ -22,6 +24,7 @@ Mono<{{name}}> insert(String id{{#fields}}, {{type}} {{name}}{{/fields}});
 @Query("UPDATE {{nameLower}}s SET name = :name WHERE id = :id")
 Mono<Integer> updateNameById(String id, String name);
 
-Flux<{{name}}> findAllByNameContainingIgnoreCase(String name);
+@Query("UPDATE {{table}} SET {{#fields}}{{name}} = :{{name}}{{^last}}, {{/last}}{{/fields}} WHERE id = :id")
+Mono<Integer> updateAllById(String id,{{#fields}}{{type}} {{name}}, {{/fields}});
 
 }

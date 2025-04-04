@@ -25,12 +25,12 @@ this.queryGateway = queryGateway;
 
 @GetMapping
 public Mono<List<{{name}}Response>> list(
-	@RequestParam(defaultValue = "0") long page,
-	@RequestParam(defaultValue = "10") long limit
+	@RequestParam(defaultValue = "0") int page,
+	@RequestParam(defaultValue = "10") int limit
 	) {
 	return Mono.fromFuture(queryGateway.query(
 	new List{{name}}Query(page,limit),
 	org.axonframework.messaging.responsetypes.ResponseTypes.multipleInstancesOf({{name}}Response.class)
 	));
 	}
-	}
+}

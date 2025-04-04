@@ -27,7 +27,11 @@ public class ProjectionGeneratorService {
 
         Set<String> imports = new LinkedHashSet<>();
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getEventPackage()) + ".*");
+        imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getRepositoryPackage()) + ".*");
+
         context.put("imports", imports);
+        var fields = definition.getFields();
+        context.put("fields", FieldTransformer.transform(fields, definition.getName()));
 
         String content = templateEngine.render("projection.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "Projection.java", content);

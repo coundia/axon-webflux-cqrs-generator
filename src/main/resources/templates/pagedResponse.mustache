@@ -24,6 +24,6 @@ public class {{name}}PagedResponse implements Serializable {
 	private long totalPages;
 
 	public static  {{name}}PagedResponse from(List<{{name}}Response> content, int page, int size, long totalElements,long totalPages) {
-		return new {{name}}PagedResponse<>(content, page, size, totalElements, totalPages);
+		return new {{name}}PagedResponse(content, page, size, totalElements, totalPages);
 		}
 }

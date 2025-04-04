@@ -16,8 +16,8 @@ this.{{entityLower}}Repository = {{entityLower}}Repository;
 
 @QueryHandler
 public Mono<{{entity}}PagedResponse> handle(List{{entity}}Query query) {
-	int limit = (int) query.getLimit();
-	int offset = (int) (query.getPage() * query.getLimit());
+	int limit = query.getLimit();
+	int offset = (query.getPage() * query.getLimit());
 
 	Mono<Long> totalElements = {{entityLower}}Repository.findAll().count();
 	Mono<List<{{entity}}>> items = {{entityLower}}Repository.findAllByPage(limit, offset).collectList();
@@ -32,7 +32,9 @@ public Mono<{{entity}}PagedResponse> handle(List{{entity}}Query query) {
 			responses,
 			query.getPage(),
 			query.getLimit(),
-			tuple.getT2()
+			tuple.getT2(),
+			tuple.getT2()/query.getLimit()
 			);
 	});
+}
 }

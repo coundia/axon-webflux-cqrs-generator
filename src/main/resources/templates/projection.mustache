@@ -6,19 +6,36 @@ import {{.}};
 
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Component
 public class {{name}}Projection {
 
-@EventHandler
-public void on({{name}}CreatedEvent event) {
+private final {{name}}Repository repository;
+
+public {{name}}Projection({{name}}Repository repository) {
+this.repository = repository;
 }
 
 @EventHandler
-public void on({{name}}UpdatedEvent event) {
-}
+public Mono<Void> on({{name}}CreatedEvent event) {
+	return repository.insert(
+	{{#fields}}            event.get{{nameCapitalized}}().value(){{^last}},{{/last}}
+	{{/fields}}
+	).then();
+	}
 
-@EventHandler
-public void on({{name}}DeletedEvent event) {
-}
+	@EventHandler
+	public Mono<Void> on({{name}}UpdatedEvent event) {
+		return repository.updateAllById(
+		{{#fields}}        event.get{{nameCapitalized}}().value(){{^last}},{{/last}}
+		{{/fields}}
+		).then();
+	}
+
+
+		@EventHandler
+	public Mono<Void> on({{name}}DeletedEvent event) {
+		return repository.deleteById(event.getId().value()).then();
+		}
 }
