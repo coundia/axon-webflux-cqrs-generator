@@ -36,10 +36,10 @@ public class PagedResponseTests {
         EntityDefinition definition = EntityDefinition.fromClass(ListQueryHandlerGeneratorServiceTest.MockEntity.class);
         service.generate(definition,tempDir.toString());
 
-        Path generatedFile = tempDir.resolve(properties.getDtoPackage() + "/PagedResponse.java");
+        Path generatedFile = tempDir.resolve(properties.getDtoPackage() + "/MockEntityPagedResponse.java");
         assertThat(generatedFile.toFile()).exists();
 
         String content = Files.readString(generatedFile);
-        assertThat(content).contains("public class PagedResponse");
+        assertThat(content).contains("public class MockEntityPagedResponse");
     }
 }

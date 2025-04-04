@@ -38,10 +38,10 @@ public class CreateControllerTests {
         EntityDefinition definition = EntityDefinition.fromClass(MockEntity.class);
         service.generate(definition, tempDir.toString());
 
-        File generated = tempDir.resolve(generatorProperties.getControllerPackage() + "/CreateMockEntityController.java").toFile();
+        File generated = tempDir.resolve(generatorProperties.getControllerPackage() + "/AddMockEntityController.java").toFile();
         assertThat(generated).exists();
 
         String content = Files.readString(generated.toPath());
-        assertThat(content).contains("public class CreateMockEntityController");
+        assertThat(content).contains("public class AddMockEntityController");
     }
 }

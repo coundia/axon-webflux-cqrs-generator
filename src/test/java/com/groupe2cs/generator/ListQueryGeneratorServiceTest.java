@@ -48,8 +48,8 @@ public class ListQueryGeneratorServiceTest {
 
         String content = Files.readString(generated.toPath());
         assertThat(content).contains("public class ListMockEntityQuery");
-        assertThat(content).contains("private long page");
-        assertThat(content).contains("private long limit");
+        assertThat(content).contains("private int page");
+        assertThat(content).contains("private int limit");
     }
 
     static class MockEntity {

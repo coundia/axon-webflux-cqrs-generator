@@ -43,6 +43,8 @@ public class ProjectionTests {
 
         String content = Files.readString(file.toPath());
         assertThat(content).contains("class MockEntityProjection");
-        assertThat(content).contains("void on(MockEntityCreatedEvent event)");
+        assertThat(content).contains("public Mono<Void> on(MockEntityCreatedEvent event)");
+        assertThat(content).contains("public Mono<Void> on(MockEntityUpdatedEvent event");
+        assertThat(content).contains("public Mono<Void> on(MockEntityDeletedEvent event)");
     }
 }
