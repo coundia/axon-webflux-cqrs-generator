@@ -1,7 +1,7 @@
-package com.groupe2cs.generator;
+package com.groupe2cs.generator.tests.services;
 
 import com.groupe2cs.generator.config.GeneratorProperties;
-import com.groupe2cs.generator.config.GeneratorPropertiesTestConfig;
+import com.groupe2cs.generator.tests.config.GeneratorPropertiesTestConfig;
 import com.groupe2cs.generator.model.EntityDefinition;
 import com.groupe2cs.generator.service.PagedResponseGeneratorService;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 

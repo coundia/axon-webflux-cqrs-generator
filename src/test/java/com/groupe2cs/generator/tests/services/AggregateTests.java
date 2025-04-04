@@ -1,9 +1,9 @@
-package com.groupe2cs.generator;
+package com.groupe2cs.generator.tests.services;
 
 import com.groupe2cs.generator.config.GeneratorProperties;
-import com.groupe2cs.generator.config.GeneratorPropertiesTestConfig;
+import com.groupe2cs.generator.tests.config.GeneratorPropertiesTestConfig;
 import com.groupe2cs.generator.model.EntityDefinition;
-import com.groupe2cs.generator.service.EntityGeneratorService;
+import com.groupe2cs.generator.service.AggregateGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,31 +18,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = {GeneratorPropertiesTestConfig.class})
-public class EntityTests {
+public class AggregateTests {
 
     @Autowired
-    EntityGeneratorService service;
+    AggregateGeneratorService service;
 
     @Autowired
     GeneratorProperties generatorProperties;
 
     @Test
-    void it_should_generate_entity_file(@TempDir Path tempDir) throws Exception {
+    void it_should_generate_aggregate_file(@TempDir Path tempDir) throws Exception {
         Path templatesDir = tempDir.resolve("templates");
         Files.createDirectories(templatesDir);
         Files.writeString(
-                templatesDir.resolve("entity.mustache"),
-                "package test;\n\n@org.springframework.data.relational.core.mapping.Table(\"mockentity\")\npublic record {{name}}({{#fields}}{{type}} {{name}}{{^last}}, {{/last}}{{/fields}}) {}"
+                templatesDir.resolve("aggregate.mustache"),
+                "package test;\n\npublic class {{name}}Aggregate {\n    private {{aggregateIdType}} {{aggregateIdField}};\n}"
         );
 
         EntityDefinition definition = EntityDefinition.fromClass(MockEntity.class);
         service.generate(definition, tempDir.toString());
 
-        File file = tempDir.resolve(generatorProperties.getEntityPackage() + "/MockEntity.java").toFile();
-        assertThat(file).exists();
+        File generated = tempDir.resolve(generatorProperties.getDomainPackage()+"/MockEntityAggregate.java").toFile();
+        assertThat(generated).exists();
 
-        String content = Files.readString(file.toPath());
-        assertThat(content).contains("class MockEntity");
-        assertThat(content).contains("@Table(\"mockentity\")");
+        String content = Files.readString(generated.toPath());
+        assertThat(content).contains("public class MockEntityAggregate");
+        assertThat(content).contains("private MockEntityId id");
+        assertThat(content).contains("private MockEntityName name");
     }
 }

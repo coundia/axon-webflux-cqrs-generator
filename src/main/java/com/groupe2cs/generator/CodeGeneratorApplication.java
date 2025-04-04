@@ -1,6 +1,5 @@
 package com.groupe2cs.generator;
 
-import com.groupe2cs.generator.service.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

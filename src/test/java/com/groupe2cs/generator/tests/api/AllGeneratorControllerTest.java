@@ -1,11 +1,11 @@
-package com.groupe2cs.generator.api;
+package com.groupe2cs.generator.tests.api;
 
 import com.groupe2cs.generator.dto.ApiResponseDto;
 import com.groupe2cs.generator.dto.EntityDefinitionDTO;
 import com.groupe2cs.generator.model.EntityDefinition;
 import com.groupe2cs.generator.model.FieldDefinition;
-import com.groupe2cs.generator.service.GroupMainGenerator;
-import com.groupe2cs.generator.shared.BaseIntegrationTests;
+import com.groupe2cs.generator.GroupMainGenerator;
+import com.groupe2cs.generator.tests.shared.BaseIntegrationTests;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

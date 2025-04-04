@@ -1,4 +1,4 @@
-package com.groupe2cs.generator;
+package com.groupe2cs.generator.tests.services;
 
 
 import org.junit.jupiter.api.Test;

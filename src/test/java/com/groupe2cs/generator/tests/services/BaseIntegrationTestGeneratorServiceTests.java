@@ -1,7 +1,7 @@
-package com.groupe2cs.generator;
+package com.groupe2cs.generator.tests.services;
 
 import com.groupe2cs.generator.config.GeneratorProperties;
-import com.groupe2cs.generator.config.GeneratorPropertiesTestConfig;
+import com.groupe2cs.generator.tests.config.GeneratorPropertiesTestConfig;
 import com.groupe2cs.generator.service.BaseIntegrationTestGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

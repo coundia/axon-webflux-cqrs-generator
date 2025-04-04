@@ -1,10 +1,9 @@
-package com.groupe2cs.generator;
+package com.groupe2cs.generator.tests.services;
 
 import com.groupe2cs.generator.config.GeneratorProperties;
-import com.groupe2cs.generator.config.GeneratorPropertiesTestConfig;
+import com.groupe2cs.generator.tests.config.GeneratorPropertiesTestConfig;
 import com.groupe2cs.generator.model.EntityDefinition;
 import com.groupe2cs.generator.service.ListQueryGeneratorService;
-import com.groupe2cs.generator.service.QueryGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;

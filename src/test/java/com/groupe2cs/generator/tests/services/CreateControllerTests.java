@@ -1,9 +1,9 @@
-package com.groupe2cs.generator;
+package com.groupe2cs.generator.tests.services;
 
 import com.groupe2cs.generator.config.GeneratorProperties;
-import com.groupe2cs.generator.config.GeneratorPropertiesTestConfig;
+import com.groupe2cs.generator.tests.config.GeneratorPropertiesTestConfig;
 import com.groupe2cs.generator.model.EntityDefinition;
-import com.groupe2cs.generator.service.EventGeneratorService;
+import com.groupe2cs.generator.service.CreateControllerGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,32 +18,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = {GeneratorPropertiesTestConfig.class})
-public class EventTests {
+public class CreateControllerTests {
 
     @Autowired
-    EventGeneratorService service;
+    CreateControllerGeneratorService service;
 
     @Autowired
     GeneratorProperties generatorProperties;
 
     @Test
-    void it_should_generate_event_files(@TempDir Path tempDir) throws Exception {
+    void it_should_generate_create_controller_file(@TempDir Path tempDir) throws Exception {
         Path templatesDir = tempDir.resolve("templates");
         Files.createDirectories(templatesDir);
         Files.writeString(
-                templatesDir.resolve("event.mustache"),
-                "package test;\n\npublic class {{name}}{{eventType}}Event({{#fields}}{{type}} {{name}}{{^last}}, {{/last}}{{/fields}}) {}"
+                templatesDir.resolve("createController.mustache"),
+                "package {{package}};\n\npublic class Create{{name}}Controller {}"
         );
 
         EntityDefinition definition = EntityDefinition.fromClass(MockEntity.class);
         service.generate(definition, tempDir.toString());
 
-        for (String type : new String[]{"Created", "Updated", "Deleted"}) {
-            File file = tempDir.resolve(generatorProperties.getEventPackage() + "/MockEntity" + type + "Event.java").toFile();
-            assertThat(file).exists();
+        File generated = tempDir.resolve(generatorProperties.getControllerPackage() + "/AddMockEntityController.java").toFile();
+        assertThat(generated).exists();
 
-            String content = Files.readString(file.toPath());
-            assertThat(content).contains("public class MockEntity" + type + "Event");
-        }
+        String content = Files.readString(generated.toPath());
+        assertThat(content).contains("public class AddMockEntityController");
     }
 }

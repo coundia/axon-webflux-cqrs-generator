@@ -1,9 +1,9 @@
-package com.groupe2cs.generator;
+package com.groupe2cs.generator.tests.services;
 
 import com.groupe2cs.generator.config.GeneratorProperties;
-import com.groupe2cs.generator.config.GeneratorPropertiesTestConfig;
+import com.groupe2cs.generator.tests.config.GeneratorPropertiesTestConfig;
 import com.groupe2cs.generator.model.EntityDefinition;
-import com.groupe2cs.generator.service.ExceptionGeneratorService;
+import com.groupe2cs.generator.service.DtoResponseGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,31 +18,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = {GeneratorPropertiesTestConfig.class})
-public class ExceptionTests {
+public class DtoResponseTests {
 
     @Autowired
-    ExceptionGeneratorService service;
+    DtoResponseGeneratorService service;
 
     @Autowired
     GeneratorProperties generatorProperties;
 
     @Test
-    void it_should_generate_exception_file(@TempDir Path tempDir) throws Exception {
+    void it_should_generate_dto_response_file(@TempDir Path tempDir) throws Exception {
         Path templatesDir = tempDir.resolve("templates");
         Files.createDirectories(templatesDir);
         Files.writeString(
-                templatesDir.resolve("exception.mustache"),
-                "package test;\n\npublic class {{name}}NotFoundException extends RuntimeException {\n    public {{name}}NotFoundException({{name}}Id id) {\n        super(\"{{name}} with ID \" + id + \" not found\");\n    }\n}"
+                templatesDir.resolve("dtoResponse.mustache"),
+                "package test;\n\npublic record {{name}}Response({{#fields}}{{type}} {{name}}{{^last}}, {{/last}}{{/fields}}) {}"
         );
 
         EntityDefinition definition = EntityDefinition.fromClass(MockEntity.class);
         service.generate(definition, tempDir.toString());
 
-        File file = tempDir.resolve(generatorProperties.getExceptionPackage() + "/MockEntityNotFoundException.java").toFile();
+        File file = tempDir.resolve(generatorProperties.getDtoPackage() + "/MockEntityResponse.java").toFile();
         assertThat(file).exists();
 
         String content = Files.readString(file.toPath());
-        assertThat(content).contains("class MockEntityNotFoundException");
-        assertThat(content).contains("super(\"MockEntity with ID \" + id + \" not found\")");
+        assertThat(content).contains("public class MockEntityResponse");
     }
 }

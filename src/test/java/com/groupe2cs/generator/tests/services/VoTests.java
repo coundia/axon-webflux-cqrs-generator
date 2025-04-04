@@ -1,9 +1,9 @@
-package com.groupe2cs.generator;
+package com.groupe2cs.generator.tests.services;
 
 import com.groupe2cs.generator.config.GeneratorProperties;
-import com.groupe2cs.generator.config.GeneratorPropertiesTestConfig;
+import com.groupe2cs.generator.tests.config.GeneratorPropertiesTestConfig;
 import com.groupe2cs.generator.model.EntityDefinition;
-import com.groupe2cs.generator.service.DtoResponseGeneratorService;
+import com.groupe2cs.generator.service.VoGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,30 +18,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = {GeneratorPropertiesTestConfig.class})
-public class DtoResponseTests {
+public class VoTests {
 
     @Autowired
-    DtoResponseGeneratorService service;
+    VoGeneratorService service;
 
     @Autowired
     GeneratorProperties generatorProperties;
 
     @Test
-    void it_should_generate_dto_response_file(@TempDir Path tempDir) throws Exception {
+    void it_should_generate_vo_files(@TempDir Path tempDir) throws Exception {
         Path templatesDir = tempDir.resolve("templates");
         Files.createDirectories(templatesDir);
-        Files.writeString(
-                templatesDir.resolve("dtoResponse.mustache"),
-                "package test;\n\npublic record {{name}}Response({{#fields}}{{type}} {{name}}{{^last}}, {{/last}}{{/fields}}) {}"
-        );
+        Files.writeString(templatesDir.resolve("vo.mustache"), "public class {{voName}} {}");
 
         EntityDefinition definition = EntityDefinition.fromClass(MockEntity.class);
+
         service.generate(definition, tempDir.toString());
 
-        File file = tempDir.resolve(generatorProperties.getDtoPackage() + "/MockEntityResponse.java").toFile();
-        assertThat(file).exists();
+        File idVo = tempDir.resolve(generatorProperties.getVoPackage()+"/MockEntityId.java").toFile();
+        File nameVo = tempDir.resolve(generatorProperties.getVoPackage()+"/MockEntityName.java").toFile();
 
-        String content = Files.readString(file.toPath());
-        assertThat(content).contains("public class MockEntityResponse");
+        assertThat(Files.readString(idVo.toPath())).contains("public class MockEntityId");
+        assertThat(Files.readString(nameVo.toPath())).contains("public class MockEntityName");
     }
 }

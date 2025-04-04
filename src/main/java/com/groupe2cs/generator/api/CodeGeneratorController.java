@@ -2,7 +2,7 @@ package com.groupe2cs.generator.api;
 
 import com.groupe2cs.generator.dto.ApiResponseDto;
 import com.groupe2cs.generator.dto.EntityDefinitionDTO;
-import com.groupe2cs.generator.service.GroupMainGenerator;
+import com.groupe2cs.generator.GroupMainGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

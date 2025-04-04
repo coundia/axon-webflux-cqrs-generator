@@ -1,5 +1,6 @@
-package com.groupe2cs.generator.config;
+package com.groupe2cs.generator.tests.config;
 
+import com.groupe2cs.generator.config.GeneratorProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 

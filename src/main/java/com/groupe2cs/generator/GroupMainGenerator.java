@@ -1,9 +1,10 @@
-package com.groupe2cs.generator.service;
+package com.groupe2cs.generator;
 
 import com.groupe2cs.generator.config.GeneratorProperties;
 import com.groupe2cs.generator.dto.ApiResponseDto;
 import com.groupe2cs.generator.dto.EntityDefinitionDTO;
 import com.groupe2cs.generator.model.EntityDefinition;
+import com.groupe2cs.generator.service.*;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
