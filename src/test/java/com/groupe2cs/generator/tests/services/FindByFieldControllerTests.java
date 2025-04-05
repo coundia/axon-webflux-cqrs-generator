@@ -38,10 +38,10 @@ public class FindByFieldControllerTests {
         EntityDefinition definition = EntityDefinition.fromClass(MockEntity.class);
         service.generate(definition, tempDir.toString());
 
-        File file = tempDir.resolve(generatorProperties.getControllerPackage() + "/FindByEmailMockEntityController.java").toFile();
+        File file = tempDir.resolve(generatorProperties.getControllerPackage() + "/FindByNameMockEntityController.java").toFile();
         assertThat(file).exists();
 
         String content = Files.readString(file.toPath());
-        assertThat(content).contains("public class FindByEmailMockEntityController");
+        assertThat(content).contains("public class FindByNameMockEntityController");
     }
 }
