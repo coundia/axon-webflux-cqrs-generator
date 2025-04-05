@@ -1,6 +1,5 @@
 package {{package}};
 
-import {{repositoryImport}};
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(
+//classes = ProductCommandApplication.class,
 webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 properties = "spring.config.name=application-test"
 )
@@ -24,16 +24,9 @@ public int port;
 @Value("${server.address:localhost}")
 public String host;
 
-@Autowired
-public {{repositoryName}} {{repositoryVar}};
 
 @Autowired
 public WebTestClient webTestClient;
-
-@BeforeEach
-public void cleanDatabase() {
-{{repositoryVar}}.deleteAll().block();
-}
 
 public String getBaseUrl() {
 String uri = "http://" + this.host + ":" + this.port + "/api";

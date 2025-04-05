@@ -24,13 +24,13 @@ public class GroupMainGenerator {
     private final MapperGeneratorService mapperGenerator;
     private final ExceptionGeneratorService exceptionGeneratorService;
     private final RepositoryGeneratorService repositoryGeneratorService;
-    private final BaseIntegrationTestGeneratorService baseIntegrationTestGeneratorService;
     private final EntityGeneratorService entityGeneratorService;
     private final ListQueryGeneratorService listQueryGeneratorService;
     private final ListQueryHandlerGeneratorService listQueryHandlerGeneratorService;
     private final ListControllerGeneratorService listControllerGeneratorService;
     private final PagedResponseGeneratorService pagedResponseGeneratorService;
     private final CreateControllerGeneratorService createControllerGeneratorService;
+    private final ControllerIntegrationTestGeneratorService testControllerIntegrationTestGeneratorService;
 
 
     private EntityDefinition loadFromFileDefinition() {
@@ -56,13 +56,13 @@ public class GroupMainGenerator {
             DtoResponseGeneratorService dtoResponseGeneratorService,
             ExceptionGeneratorService exceptionGeneratorService,
             RepositoryGeneratorService repositoryGeneratorService,
-            BaseIntegrationTestGeneratorService baseIntegrationTestGeneratorService,
             EntityGeneratorService entityGeneratorService,
             ListQueryGeneratorService listQueryGeneratorService,
             ListQueryHandlerGeneratorService  listQueryHandlerGeneratorService,
             ListControllerGeneratorService listControllerGeneratorService,
             PagedResponseGeneratorService pagedResponseGeneratorService,
-            CreateControllerGeneratorService createControllerGeneratorService
+            CreateControllerGeneratorService createControllerGeneratorService,
+            ControllerIntegrationTestGeneratorService testControllerIntegrationTestGeneratorService
     ) {
         this.properties = properties;
         this.commandGenerator = commandGenerator;
@@ -75,13 +75,13 @@ public class GroupMainGenerator {
         this.dtoResponseGeneratorService = dtoResponseGeneratorService;
         this.exceptionGeneratorService = exceptionGeneratorService;
         this.repositoryGeneratorService = repositoryGeneratorService;
-        this.baseIntegrationTestGeneratorService = baseIntegrationTestGeneratorService;
         this.entityGeneratorService = entityGeneratorService;
         this.listQueryGeneratorService = listQueryGeneratorService;
         this.listQueryHandlerGeneratorService = listQueryHandlerGeneratorService;
         this.listControllerGeneratorService = listControllerGeneratorService;
         this.pagedResponseGeneratorService = pagedResponseGeneratorService;
         this.createControllerGeneratorService = createControllerGeneratorService;
+        this.testControllerIntegrationTestGeneratorService = testControllerIntegrationTestGeneratorService;
     }
 
     public Flux<ApiResponseDto> generateStreaming(EntityDefinitionDTO definitionDto) {
@@ -133,11 +133,11 @@ public class GroupMainGenerator {
                 emit(sink, "Generating Repositories...");
                 repositoryGeneratorService.generate(definition, outputDir);
 
-                emit(sink, "Generating Base Integration Test...");
-                baseIntegrationTestGeneratorService.generate();
-
                 emit(sink,"Generating entity...");
                 entityGeneratorService.generate(definition,outputDir);
+
+                emit(sink,"Generating tests...");
+                testControllerIntegrationTestGeneratorService.generate(outputDir);
 
                 emit(sink, "✅ Code generation complete!");
 

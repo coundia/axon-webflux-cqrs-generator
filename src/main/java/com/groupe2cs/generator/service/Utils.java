@@ -21,6 +21,20 @@ public class Utils {
         return normalized.replace("/", ".");
     }
 
+    public static String getTestPackage(String fullPath) {
+
+         String relativePath = getPackage(fullPath);
+
+         String testPath = relativePath.replace("main", "test");
+         testPath = getPackage(testPath);
+
+        return testPath;
+    }
+    public static String getTestDir(String fullPath) {
+
+        return fullPath.replace("main", "test");
+    }
+
     public static Object lowerFirst(String name) {
         return Character.toLowerCase(name.charAt(0)) + name.substring(1);
     }

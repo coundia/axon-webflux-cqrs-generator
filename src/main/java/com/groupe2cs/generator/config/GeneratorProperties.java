@@ -31,5 +31,6 @@ public class GeneratorProperties {
     private String  queryHandlerPackage;
     private String  exceptionPackage;
     private String  entityPackage;
+    private String  sharedPackage;
 
 }
