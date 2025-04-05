@@ -105,5 +105,8 @@ public class EntityDefinition implements Serializable {
         return lastDot != -1 ? className.substring(lastDot + 1) : className;
     }
 
+    public   String  getIdentifier(){
+        return "id";
+    }
 
 }

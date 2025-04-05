@@ -3,7 +3,6 @@ package {{package}};
 {{#imports}}
 import {{.}};
 {{/imports}}
-
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
@@ -26,5 +25,11 @@ Mono<Integer> updateNameById(String id, String name);
 
 @Query("UPDATE {{tableName}} SET {{#fields}}{{^isId}} {{name}} = :{{name}}{{^last}}, {{/last}} {{/isId}}{{/fields}} WHERE id = :id")
 Mono<Integer> updateAllById({{#fields}}{{type}} {{name}} {{^last}}, {{/last}} {{/fields}});
+
+{{#filables}}
+@Query("SELECT * FROM {{tableName}} where {{name}} = :{{name}}")
+Flux<{{entityName}}> findByField{{nameCapitalized}}(String {{name}});
+
+{{/filables}}
 
 }

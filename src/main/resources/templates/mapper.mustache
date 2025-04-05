@@ -27,4 +27,16 @@ return new Create{{name}}Command(
 );
 }
 
+public static Update{{name}}Command toUpdateCommand({{name}}Request request) {
+return new Update{{name}}Command(
+{{#fields}}            {{entity}}{{nameCapitalized}}.create(request.get{{nameCapitalized}}()){{^last}},{{/last}}
+{{/fields}}
+);
+}
+
+
+public static Delete{{name}}Command toDeleteCommand({{name}}Id id) {
+return new Delete{{name}}Command(id,null,null);
+}
+
 }

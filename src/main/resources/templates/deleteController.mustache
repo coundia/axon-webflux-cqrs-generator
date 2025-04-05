@@ -1,0 +1,43 @@
+package {{package}};
+
+{{#imports}}
+import {{.}};
+{{/imports}}
+
+import {{commandPackage}}.Delete{{name}}Command;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.CompletableFuture;
+
+@RestController
+@RequestMapping("/api/v1/commands/{{nameLowercase}}")
+@Tag(name = "{{name}} Controller", description = "Endpoints for managing {{nameLowercase}}s")
+@Slf4j
+public class Delete{{name}}Controller {
+
+private final CommandGateway commandGateway;
+
+public Delete{{name}}Controller(@Lazy CommandGateway commandGateway) {
+this.commandGateway = commandGateway;
+}
+
+@DeleteMapping("/{id}")
+@Operation(summary = "Delete an existing {{nameLowercase}}", description = "Deletes a {{nameLowercase}} by ID")
+public CompletableFuture<ResponseEntity<Void>> delete{{name}}(@PathVariable String id) {
+
+	return commandGateway.send({{name}}Mapper.toDeleteCommand({{name}}Id.create(id)))
+	.thenApply(res -> ResponseEntity.noContent().<Void>build())
+		.exceptionally(ex -> {
+		log.error("Failed to delete {{name}}: {}", ex.getMessage());
+		return ResponseEntity.internalServerError().<Void>build();
+			});
+
+	}
+
+}

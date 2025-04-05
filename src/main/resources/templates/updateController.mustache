@@ -1,0 +1,51 @@
+package {{package}};
+
+{{#imports}}
+import {{.}};
+{{/imports}}
+import {{mapperPackage}}.{{name}}Mapper;
+import {{commandPackage}}.Update{{name}}Command;
+import {{dtoPackage}}.{{name}}Request;
+import {{dtoPackage}}.{{name}}Response;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.CompletableFuture;
+
+@RestController
+@RequestMapping("/api/v1/commands/{{nameLowercase}}")
+@Tag(name = "{{name}} Controller", description = "Endpoints for managing {{nameLowercase}}s")
+@Slf4j
+public class Update{{name}}Controller {
+
+private final CommandGateway commandGateway;
+
+public Update{{name}}Controller(@Lazy CommandGateway commandGateway) {
+this.commandGateway = commandGateway;
+}
+
+@PutMapping("/{id}")
+@Operation(summary = "Update an existing {{nameLowercase}}", description = "Updates a {{nameLowercase}} and returns the updated entity")
+public CompletableFuture<ResponseEntity<{{name}}Response>> update{{name}}(@PathVariable String id, @RequestBody {{name}}Request {{nameLowercase}}Request) {
+	Update{{name}}Command update{{name}}Command = {{name}}Mapper.toUpdateCommand({{nameLowercase}}Request);
+	return commandGateway.send(update{{name}}Command)
+	.thenApply(res -> {
+	log.info("{{name}} updated successfully with ID: {}", id);
+	{{name}}Response {{nameLowercase}}Response = new {{name}}Response(
+	{{#fields}}
+		{{nameLowercase}}Request.get{{nameCapitalized}}(){{^last}},{{/last}}
+	{{/fields}}
+	);
+	return ResponseEntity.ok({{nameLowercase}}Response);
+	})
+	.exceptionally(ex -> {
+	log.error("Failed to update {{nameLowercase}}: {}", ex.getMessage());
+	return ResponseEntity.internalServerError().build();
+	});
+	}
+	}

@@ -31,8 +31,13 @@ public class RepositoryGeneratorService {
         context.put("imports", imports);
 
         context.put("tableName", definition.getName().toLowerCase());
+        context.put("entityName", definition.getName());
         var fields = definition.getFields();
         context.put("fields", FieldTransformer.realField(fields, definition.getName()));
+
+        var filables = definition.getFields().stream().filter(p -> p.isFilable()).toList();
+
+        context.put("filables", filables);
 
         String content = templateEngine.render("repository.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "Repository.java", content);

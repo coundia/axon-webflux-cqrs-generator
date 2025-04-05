@@ -1,0 +1,50 @@
+package com.groupe2cs.generator.service;
+
+import com.groupe2cs.generator.config.GeneratorProperties;
+import com.groupe2cs.generator.model.EntityDefinition;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
+@Service
+public class FindByFieldQueryGeneratorService {
+
+    private final TemplateEngine templateEngine;
+    private final FileWriterService fileWriterService;
+    private final GeneratorProperties generatorProperties;
+
+    public FindByFieldQueryGeneratorService(TemplateEngine templateEngine, FileWriterService fileWriterService, GeneratorProperties generatorProperties) {
+        this.templateEngine = templateEngine;
+        this.fileWriterService = fileWriterService;
+        this.generatorProperties = generatorProperties;
+    }
+
+    public void generate(EntityDefinition definition, String baseDir) {
+        String outputDir = baseDir + "/" + generatorProperties.getQueryPackage();
+        String packageName = Utils.getPackage(outputDir);
+
+        var fields = definition.getFields().stream().filter(p -> p.isFilable()).toList();
+
+        for (var field : fields) {
+            field.setNameCapitalized(capitalize(field.getName()));
+
+            Map<String, Object> context = new HashMap<>();
+            context.put("package", packageName);
+            context.put("field", field);
+            context.put("name", definition.getName());
+
+            String className = "FindBy" + field.getNameCapitalized() + definition.getName() + "Query";
+            context.put("className", className);
+
+            String content = templateEngine.render("findByFieldQuery.mustache", context);
+            fileWriterService.write(outputDir, className + ".java", content);
+        }
+    }
+
+    private String capitalize(String name) {
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
+}

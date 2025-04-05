@@ -31,6 +31,12 @@ public class GroupMainGenerator {
     private final PagedResponseGeneratorService pagedResponseGeneratorService;
     private final CreateControllerGeneratorService createControllerGeneratorService;
     private final ControllerIntegrationTestGeneratorService testControllerIntegrationTestGeneratorService;
+    private final DeleteControllerGeneratorService deleteControllerGeneratorService;
+    private final FindByFieldControllerGeneratorService findByFieldControllerGeneratorService;
+    private final FindByIdentifyControllerGeneratorService findByIdentifyControllerGeneratorService;
+    private final UpdateControllerGeneratorService updateControllerGeneratorService;
+    private final FindByFieldQueryGeneratorService findByFieldQueryGeneratorService;
+    private final FindByFieldQueryHandlerGeneratorService findByFieldQueryHandlerGeneratorService;
 
 
     private EntityDefinition loadFromFileDefinition() {
@@ -51,6 +57,7 @@ public class GroupMainGenerator {
             VoGeneratorService voGenerator,
             EventGeneratorService eventGenerator,
             ProjectionGeneratorService projectionGenerator,
+
             DtoRequestGeneratorService dtoRequestGeneratorService,
             MapperGeneratorService mapperGenerator,
             DtoResponseGeneratorService dtoResponseGeneratorService,
@@ -58,11 +65,19 @@ public class GroupMainGenerator {
             RepositoryGeneratorService repositoryGeneratorService,
             EntityGeneratorService entityGeneratorService,
             ListQueryGeneratorService listQueryGeneratorService,
-            ListQueryHandlerGeneratorService  listQueryHandlerGeneratorService,
+            ListQueryHandlerGeneratorService listQueryHandlerGeneratorService,
             ListControllerGeneratorService listControllerGeneratorService,
             PagedResponseGeneratorService pagedResponseGeneratorService,
             CreateControllerGeneratorService createControllerGeneratorService,
-            ControllerIntegrationTestGeneratorService testControllerIntegrationTestGeneratorService
+            ControllerIntegrationTestGeneratorService testControllerIntegrationTestGeneratorService,
+            DeleteControllerGeneratorService deleteControllerGeneratorService,
+            FindByFieldControllerGeneratorService findByFieldControllerGeneratorService,
+            FindByIdentifyControllerGeneratorService findByIdentifyControllerGeneratorService,
+            UpdateControllerGeneratorService updateControllerGeneratorService,
+            FindByFieldQueryGeneratorService findByFieldQueryGeneratorService,
+            FindByFieldQueryHandlerGeneratorService findByFieldQueryHandlerGeneratorService,
+            FindByFieldProjectionGeneratorService findByFieldProjectionGeneratorService
+
     ) {
         this.properties = properties;
         this.commandGenerator = commandGenerator;
@@ -82,6 +97,14 @@ public class GroupMainGenerator {
         this.pagedResponseGeneratorService = pagedResponseGeneratorService;
         this.createControllerGeneratorService = createControllerGeneratorService;
         this.testControllerIntegrationTestGeneratorService = testControllerIntegrationTestGeneratorService;
+
+        this.deleteControllerGeneratorService = deleteControllerGeneratorService;
+        this.findByFieldControllerGeneratorService = findByFieldControllerGeneratorService;
+        this.findByIdentifyControllerGeneratorService = findByIdentifyControllerGeneratorService;
+        this.updateControllerGeneratorService = updateControllerGeneratorService;
+
+        this.findByFieldQueryGeneratorService=findByFieldQueryGeneratorService;
+        this.findByFieldQueryHandlerGeneratorService=findByFieldQueryHandlerGeneratorService;
     }
 
     public Flux<ApiResponseDto> generateStreaming(EntityDefinitionDTO definitionDto) {
@@ -109,9 +132,9 @@ public class GroupMainGenerator {
 
                 emit(sink, "Generating Queries...");
                 listQueryGeneratorService.generate(definition, outputDir);
-
-                emit(sink, "Generating Query Handlers...");
                 listQueryHandlerGeneratorService.generate(definition, outputDir);
+                findByFieldQueryGeneratorService.generate(definition, outputDir);
+                findByFieldQueryHandlerGeneratorService.generate(definition, outputDir);
 
                 emit(sink, "Generating DTO Requests...");
                 dtoRequestGeneratorService.generate(definition, outputDir);
@@ -120,8 +143,14 @@ public class GroupMainGenerator {
                 dtoResponseGeneratorService.generate(definition, outputDir);
                 pagedResponseGeneratorService.generate(definition, outputDir);
 
+                emit(sink, "Generating entity...");
+                entityGeneratorService.generate(definition, outputDir);
+
                 emit(sink, "Generating Mappers...");
                 mapperGenerator.generate(definition, outputDir);
+
+                emit(sink, "Generating Repositories...");
+                repositoryGeneratorService.generate(definition, outputDir);
 
                 emit(sink, "Generating Projections...");
                 projectionGenerator.generate(definition, outputDir);
@@ -129,14 +158,12 @@ public class GroupMainGenerator {
                 emit(sink, "Generating Controllers...");
                 listControllerGeneratorService.generate(definition, outputDir);
                 createControllerGeneratorService.generate(definition, outputDir);
+                deleteControllerGeneratorService.generate(definition, outputDir);
+                findByIdentifyControllerGeneratorService.generate(definition, outputDir);
+                findByFieldControllerGeneratorService.generate(definition, outputDir);
+                updateControllerGeneratorService.generate(definition, outputDir);
 
-                emit(sink, "Generating Repositories...");
-                repositoryGeneratorService.generate(definition, outputDir);
-
-                emit(sink,"Generating entity...");
-                entityGeneratorService.generate(definition,outputDir);
-
-                emit(sink,"Generating tests...");
+                emit(sink, "Generating tests...");
                 testControllerIntegrationTestGeneratorService.generate(outputDir);
 
                 emit(sink, "✅ Code generation complete!");
