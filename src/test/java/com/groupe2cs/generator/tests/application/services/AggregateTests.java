@@ -3,7 +3,7 @@ package com.groupe2cs.generator.tests.application.services;
 import com.groupe2cs.generator.infrastructure.config.GeneratorProperties;
 import com.groupe2cs.generator.tests.infrastrucutre.config.GeneratorPropertiesTestConfig;
 import com.groupe2cs.generator.domain.model.EntityDefinition;
-import com.groupe2cs.generator.application.service.AggregateGeneratorService;
+import com.groupe2cs.generator.application.service.domainservice.AggregateGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;

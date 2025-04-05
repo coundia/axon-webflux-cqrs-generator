@@ -1,5 +1,6 @@
-package com.groupe2cs.generator.application.service;
+package com.groupe2cs.generator.application.service.applicationservice;
 
+import com.groupe2cs.generator.domain.engine.FieldTransformer;
 import com.groupe2cs.generator.domain.engine.FileWriterService;
 import com.groupe2cs.generator.domain.engine.TemplateEngine;
 import com.groupe2cs.generator.infrastructure.config.GeneratorProperties;
@@ -10,13 +11,13 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class EntityGeneratorService {
+public class MapperGeneratorService {
 
     private final TemplateEngine templateEngine;
     private final FileWriterService fileWriterService;
     private final GeneratorProperties generatorProperties;
 
-    public EntityGeneratorService(TemplateEngine templateEngine, FileWriterService fileWriterService, GeneratorProperties generatorProperties) {
+    public MapperGeneratorService(TemplateEngine templateEngine, FileWriterService fileWriterService, GeneratorProperties generatorProperties) {
         this.templateEngine = templateEngine;
         this.fileWriterService = fileWriterService;
         this.generatorProperties = generatorProperties;
@@ -25,25 +26,23 @@ public class EntityGeneratorService {
     public void generate(EntityDefinition definition, String baseDir) {
         Map<String, Object> context = new HashMap<>(definition.toMap());
 
-        String outputDir = baseDir + "/" + generatorProperties.getEntityPackage();
+        String outputDir = baseDir + "/" + generatorProperties.getMapperPackage();
         context.put("package", Utils.getPackage(outputDir));
-        context.put("table", definition.getName().toLowerCase());
 
         var fields = definition.getFields();
-
-        fields = fields.stream().filter(
-                f-> !f.getName().equalsIgnoreCase("id")
-        ).toList();
-
-        context.put("fields", fields);
+        context.put("fields", FieldTransformer.transform(fields, definition.getName()));
+        context.put("entity", definition.getName());
 
         Set<String> imports = new LinkedHashSet<>();
-        imports.add("org.springframework.data.annotation.Id");
-        imports.add("org.springframework.data.relational.core.mapping.Table");
+        imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getDtoPackage()) + ".*");
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
+        imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getDomainPackage()) + ".*");
+        imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getEntityPackage()) + ".*");
+        imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getCommandPackage()) + ".*");
+
         context.put("imports", imports);
 
-        String content = templateEngine.render("infrastructure/entity.mustache", context);
-        fileWriterService.write(outputDir, definition.getName() + ".java", content);
+        String content = templateEngine.render("application/mapper.mustache", context);
+        fileWriterService.write(outputDir, definition.getName() + "Mapper.java", content);
     }
 }

@@ -1,4 +1,4 @@
-package com.groupe2cs.generator.application.service;
+package com.groupe2cs.generator.application.service.presentationservice;
 
 import com.groupe2cs.generator.domain.engine.FileWriterService;
 import com.groupe2cs.generator.domain.engine.TemplateEngine;

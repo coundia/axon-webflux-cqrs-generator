@@ -1,4 +1,4 @@
-package com.groupe2cs.generator.application.service;
+package com.groupe2cs.generator.application.service.applicationservice;
 
 import com.groupe2cs.generator.domain.engine.FileWriterService;
 import com.groupe2cs.generator.domain.engine.TemplateEngine;
@@ -11,30 +11,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class ListQueryGeneratorService {
+public class PagedResponseGeneratorService {
 
     private final TemplateEngine templateEngine;
     private final FileWriterService fileWriterService;
-    private final GeneratorProperties generatorProperties;
+    private final GeneratorProperties properties;
 
-    public ListQueryGeneratorService(
-            TemplateEngine templateEngine,
-            FileWriterService fileWriterService,
-            GeneratorProperties generatorProperties
-    ) {
+    public PagedResponseGeneratorService(TemplateEngine templateEngine, FileWriterService fileWriterService, GeneratorProperties properties) {
         this.templateEngine = templateEngine;
         this.fileWriterService = fileWriterService;
-        this.generatorProperties = generatorProperties;
+        this.properties = properties;
     }
 
     public void generate(EntityDefinition definition, String baseDir) {
-        String outputDir = baseDir + "/" + generatorProperties.getQueryPackage();
-
         Map<String, Object> context = new HashMap<>();
+        String outputDir = baseDir + "/" + properties.getDtoPackage();
         context.put("package", Utils.getPackage(outputDir));
         context.put("name", definition.getName());
 
-        String content = templateEngine.render("application/list-query.mustache", context);
-        fileWriterService.write(outputDir, "List" + definition.getName() + "Query.java", content);
+        String content = templateEngine.render("application/pagedResponse.mustache", context);
+        fileWriterService.write(outputDir, definition.getName()+"PagedResponse.java", content);
     }
 }

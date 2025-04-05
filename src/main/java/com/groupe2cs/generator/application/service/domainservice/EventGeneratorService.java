@@ -1,4 +1,4 @@
-package com.groupe2cs.generator.application.service;
+package com.groupe2cs.generator.application.service.domainservice;
 
 import com.groupe2cs.generator.domain.engine.FieldTransformer;
 import com.groupe2cs.generator.domain.engine.FileWriterService;
@@ -11,36 +11,32 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class CommandGeneratorService {
+public class EventGeneratorService {
 
     private final TemplateEngine templateEngine;
     private final FileWriterService fileWriterService;
     private final GeneratorProperties generatorProperties;
 
-    public CommandGeneratorService(
-            TemplateEngine templateEngine,
-            FileWriterService fileWriterService,
-            GeneratorProperties generatorProperties
-    ) {
+    public EventGeneratorService(TemplateEngine templateEngine, FileWriterService fileWriterService, GeneratorProperties generatorProperties) {
         this.templateEngine = templateEngine;
         this.fileWriterService = fileWriterService;
         this.generatorProperties = generatorProperties;
     }
 
-    public void generate(EntityDefinition definition, String outputDir) {
-        List<String> commandTypes = List.of("Create", "Update", "Delete");
+    public void generate(EntityDefinition definition, String baseDir) {
+        List<String> eventTypes = List.of("Created", "Updated", "Deleted");
 
-        for (String type : commandTypes) {
-            generateCommand(type, definition, outputDir);
+        for (String type : eventTypes) {
+            generateEvent(definition, baseDir, type);
         }
     }
 
-    private void generateCommand(String prefix, EntityDefinition definition, String baseDir) {
+    private void generateEvent(EntityDefinition definition, String baseDir, String eventType) {
         Map<String, Object> context = new HashMap<>(definition.toMap());
 
-        String outputDir = baseDir + "/" + generatorProperties.getCommandPackage();
+        String outputDir = baseDir + "/" + generatorProperties.getEventPackage();
         context.put("package", Utils.getPackage(outputDir));
-        context.put("commandType", prefix);
+        context.put("eventType", eventType);
 
         var fields = definition.getFields();
         context.put("fields", FieldTransformer.transform(fields, definition.getName()));
@@ -49,8 +45,7 @@ public class CommandGeneratorService {
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
         context.put("imports", imports);
 
-        context.put("name", prefix + definition.getName());
-        String content = templateEngine.render("application/command.mustache", context);
-        fileWriterService.write(outputDir, prefix + definition.getName() + "Command.java", content);
+        String content = templateEngine.render("domain/event.mustache", context);
+        fileWriterService.write(outputDir, definition.getName() + eventType + "Event.java", content);
     }
 }

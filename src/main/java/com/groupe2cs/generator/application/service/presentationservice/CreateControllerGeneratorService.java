@@ -1,4 +1,4 @@
-package com.groupe2cs.generator.application.service;
+package com.groupe2cs.generator.application.service.presentationservice;
 
 import com.groupe2cs.generator.domain.engine.FieldTransformer;
 import com.groupe2cs.generator.domain.engine.FileWriterService;
@@ -8,17 +8,16 @@ import com.groupe2cs.generator.domain.model.EntityDefinition;
 import com.groupe2cs.generator.shared.Utils;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
-public class FindByFieldControllerGeneratorService {
+public class CreateControllerGeneratorService {
 
     private final TemplateEngine templateEngine;
     private final FileWriterService fileWriterService;
     private final GeneratorProperties generatorProperties;
 
-    public FindByFieldControllerGeneratorService(TemplateEngine templateEngine, FileWriterService fileWriterService, GeneratorProperties generatorProperties) {
+    public CreateControllerGeneratorService(TemplateEngine templateEngine, FileWriterService fileWriterService, GeneratorProperties generatorProperties) {
         this.templateEngine = templateEngine;
         this.fileWriterService = fileWriterService;
         this.generatorProperties = generatorProperties;
@@ -30,28 +29,14 @@ public class FindByFieldControllerGeneratorService {
         String outputDir = baseDir + "/" + generatorProperties.getControllerPackage();
         context.put("package", Utils.getPackage(outputDir));
         context.put("nameLowercase", definition.getName().toLowerCase());
-        context.put("queryPackage", Utils.getPackage(baseDir + "/" + generatorProperties.getQueryPackage()));
+        context.put("mapperPackage", Utils.getPackage(baseDir + "/" + generatorProperties.getMapperPackage()));
         context.put("dtoPackage", Utils.getPackage(baseDir + "/" + generatorProperties.getDtoPackage()));
+        context.put("commandPackage", Utils.getPackage(baseDir + "/" + generatorProperties.getCommandPackage()));
 
         var fields = definition.getFields();
         context.put("fields", FieldTransformer.transform(fields, definition.getName()));
 
-        fields = fields.stream().filter(
-                p -> p.isFilable()
-        ).toList();
-
-        for (var field : fields) {
-            Map<String, Object> fieldContext = new HashMap<>(context);
-            field.setNameCapitalized(capitalize(field.getName()));
-            fieldContext.put("field", field);
-            String className = "FindBy" + capitalize(field.getName()) + definition.getName() + "Controller";
-            fieldContext.put("className", className);
-            String content = templateEngine.render("presentation/findByFieldController.mustache", fieldContext);
-            fileWriterService.write(outputDir, className+".java", content);
-        }
-    }
-
-    private String capitalize(String name) {
-        return name.substring(0, 1).toUpperCase() + name.substring(1);
+        String content = templateEngine.render("presentation/createController.mustache", context);
+        fileWriterService.write(outputDir, "Add" + definition.getName() + "Controller.java", content);
     }
 }

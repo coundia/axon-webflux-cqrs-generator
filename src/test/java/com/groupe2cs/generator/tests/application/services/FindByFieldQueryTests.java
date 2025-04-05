@@ -2,7 +2,7 @@ package com.groupe2cs.generator.tests.application.services;
 
 import com.groupe2cs.generator.infrastructure.config.GeneratorProperties;
 import com.groupe2cs.generator.domain.model.EntityDefinition;
-import com.groupe2cs.generator.application.service.FindByFieldQueryGeneratorService;
+import com.groupe2cs.generator.application.service.applicationservice.FindByFieldQueryGeneratorService;
 import com.groupe2cs.generator.tests.infrastrucutre.config.GeneratorPropertiesTestConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

@@ -1,4 +1,4 @@
-package com.groupe2cs.generator.application.service;
+package com.groupe2cs.generator.application.service.presentationservice;
 
 import com.groupe2cs.generator.domain.engine.FileWriterService;
 import com.groupe2cs.generator.domain.engine.TemplateEngine;
@@ -11,20 +11,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class FindByFieldQueryGeneratorService {
+public class FindByFieldProjectionGeneratorService {
 
     private final TemplateEngine templateEngine;
     private final FileWriterService fileWriterService;
     private final GeneratorProperties generatorProperties;
 
-    public FindByFieldQueryGeneratorService(TemplateEngine templateEngine, FileWriterService fileWriterService, GeneratorProperties generatorProperties) {
+    public FindByFieldProjectionGeneratorService(TemplateEngine templateEngine, FileWriterService fileWriterService, GeneratorProperties generatorProperties) {
         this.templateEngine = templateEngine;
         this.fileWriterService = fileWriterService;
         this.generatorProperties = generatorProperties;
     }
 
     public void generate(EntityDefinition definition, String baseDir) {
-        String outputDir = baseDir + "/" + generatorProperties.getQueryPackage();
+        String outputDir = baseDir + "/" + generatorProperties.getProjectionPackage();
         String packageName = Utils.getPackage(outputDir);
 
         var fields = definition.getFields().stream().filter(p -> p.isFilable()).toList();
@@ -36,11 +36,14 @@ public class FindByFieldQueryGeneratorService {
             context.put("package", packageName);
             context.put("field", field);
             context.put("name", definition.getName());
+            context.put("repositoryPackage", Utils.getPackage(baseDir + "/" + generatorProperties.getRepositoryPackage()));
+            context.put("queryPackage", Utils.getPackage(baseDir + "/" + generatorProperties.getQueryPackage()));
+            context.put("dtoPackage", Utils.getPackage(baseDir + "/" + generatorProperties.getDtoPackage()));
 
-            String className = "FindBy" + field.getNameCapitalized() + definition.getName() + "Query";
+            String className = "FindBy" + field.getNameCapitalized() + definition.getName() + "Projection";
             context.put("className", className);
 
-            String content = templateEngine.render("application/findByFieldQuery.mustache", context);
+            String content = templateEngine.render("presentation/findByFieldProjection.mustache", context);
             fileWriterService.write(outputDir, className + ".java", content);
         }
     }
