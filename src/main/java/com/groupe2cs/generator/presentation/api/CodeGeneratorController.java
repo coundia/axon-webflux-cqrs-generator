@@ -23,6 +23,8 @@ public class CodeGeneratorController {
         log.info("📨 Requête reçue pour générer l'entité: {}", request.getDefinition().getName());
         log.info("📦 Champs: {}", request.getDefinition().getFields().toString());
         log.info("📂 Dossier de sortie: {}", request.getOutputDir());
+        log.info("📂   table: {}", request.getDefinition().getTable());
+
 
         return groupMainGenerator.generateStreaming(request);
     }

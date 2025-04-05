@@ -27,7 +27,7 @@ public class EntityGeneratorService {
 
         String outputDir = baseDir + "/" + generatorProperties.getEntityPackage();
         context.put("package", Utils.getPackage(outputDir));
-        context.put("table", definition.getName().toLowerCase());
+        context.put("tableName", definition.getTable());
 
         var fields = definition.getFields();
 

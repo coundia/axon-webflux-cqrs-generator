@@ -23,7 +23,13 @@ import java.util.stream.Collectors;
 public class EntityDefinition implements Serializable {
 
     private  String name;
+    private  String table;
     private  List<FieldDefinition> fields;
+
+    public EntityDefinition(String name, List<FieldDefinition> fields) {
+        this.name = name;
+        this.fields = fields;
+    }
 
     public static EntityDefinition fromClassName(String className) {
         try {

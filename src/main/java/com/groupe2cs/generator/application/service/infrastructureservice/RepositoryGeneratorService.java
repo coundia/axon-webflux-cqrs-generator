@@ -34,7 +34,7 @@ public class RepositoryGeneratorService {
 
         context.put("imports", imports);
 
-        context.put("tableName", definition.getName().toLowerCase());
+        context.put("tableName", definition.getTable());
         context.put("entityName", definition.getName());
         var fields = definition.getFields();
         context.put("fields", FieldTransformer.realField(fields, definition.getName()));
