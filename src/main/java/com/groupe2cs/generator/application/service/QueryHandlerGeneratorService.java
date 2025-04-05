@@ -33,7 +33,7 @@ public class QueryHandlerGeneratorService {
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getDtoPackage()) + "." + definition.getName() + "Response");
         context.put("imports", imports);
 
-        String content = templateEngine.render("queryHandler.mustache", context);
+        String content = templateEngine.render("application/queryHandler.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "QueryHandler.java", content);
     }
 }

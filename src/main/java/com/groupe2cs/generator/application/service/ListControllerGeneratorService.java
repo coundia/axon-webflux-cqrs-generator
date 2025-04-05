@@ -35,7 +35,7 @@ public class ListControllerGeneratorService {
 
         context.put("imports", imports);
 
-        String content = templateEngine.render("listController.mustache", context);
+        String content = templateEngine.render("presentation/listController.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "ListController.java", content);
     }
 }

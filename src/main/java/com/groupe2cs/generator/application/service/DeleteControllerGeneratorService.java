@@ -39,7 +39,7 @@ public class DeleteControllerGeneratorService {
 
         context.put("imports", imports);
 
-        String content = templateEngine.render("deleteController.mustache", context);
+        String content = templateEngine.render("presentation/deleteController.mustache", context);
         fileWriterService.write(outputDir, "Delete" + definition.getName() + "Controller.java", content);
     }
 }

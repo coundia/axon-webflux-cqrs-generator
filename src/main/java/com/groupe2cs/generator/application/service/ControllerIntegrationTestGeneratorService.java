@@ -39,7 +39,7 @@ public class ControllerIntegrationTestGeneratorService {
         context.put("package", packageName);
         String outputDir = Utils.getTestDir(fullPath);
 
-        String content = templateEngine.render("baseIntegrationTest.mustache", context);
+        String content = templateEngine.render("tests/baseIntegrationTest.mustache", context);
         fileWriterService.write(outputDir, "BaseIntegrationTests.java", content);
     }
 
@@ -51,7 +51,7 @@ public class ControllerIntegrationTestGeneratorService {
         context.put("package", packageName);
         String outputDir = Utils.getTestDir(fullPath);
 
-        String content = templateEngine.render("baseUnitTest.mustache", context);
+        String content = templateEngine.render("tests/baseUnitTest.mustache", context);
         fileWriterService.write(outputDir, "BaseUnitTests.java", content);
     }
 
@@ -71,7 +71,7 @@ public class ControllerIntegrationTestGeneratorService {
         imports.add(Utils.getTestPackage(baseDir + "/" + generatorProperties.getSharedPackage()) + ".*");
         context.put("imports", imports);
 
-        String content = templateEngine.render("controllerIntegrationTest.mustache", context);
+        String content = templateEngine.render("tests/controllerIntegrationTest.mustache", context);
 
         fileWriterService.write(outputDir,  "StatusControllerTest.java", content);
     }

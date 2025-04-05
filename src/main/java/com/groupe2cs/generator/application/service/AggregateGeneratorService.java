@@ -41,7 +41,7 @@ public class AggregateGeneratorService {
         context.put("fields", FieldTransformer.transform(fields, definition.getName()));
         context.put("imports", buildImports(baseDir));
 
-        String content = templateEngine.render("aggregate.mustache", context);
+        String content = templateEngine.render("domain/aggregate.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "Aggregate.java", content);
     }
 

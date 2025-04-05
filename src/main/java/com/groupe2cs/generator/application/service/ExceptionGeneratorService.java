@@ -32,7 +32,7 @@ public class ExceptionGeneratorService {
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + "." + definition.getName() + "Id");
         context.put("imports", imports);
 
-        String content = templateEngine.render("exception.mustache", context);
+        String content = templateEngine.render("domain/exception.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "NotFoundException.java", content);
     }
 }

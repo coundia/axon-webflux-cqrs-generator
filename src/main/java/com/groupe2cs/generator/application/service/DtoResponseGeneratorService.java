@@ -35,7 +35,7 @@ public class DtoResponseGeneratorService {
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
         context.put("imports", imports);
 
-        String content = templateEngine.render("dtoResponse.mustache", context);
+        String content = templateEngine.render("application/dtoResponse.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "Response.java", content);
     }
 }

@@ -36,7 +36,7 @@ public class FindByFieldRepositoryGeneratorService {
         context.put("fields", fields);
         context.put("dtoPackage", Utils.getPackage(baseDir + "/" + generatorProperties.getDtoPackage()));
 
-        String content = templateEngine.render("findByFieldRepository.mustache", context);
+        String content = templateEngine.render("infrastructure/findByFieldRepository.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "Repository.java", content);
     }
 }

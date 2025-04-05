@@ -37,7 +37,7 @@ public class ProjectionGeneratorService {
         var fields = definition.getFields();
         context.put("fields", FieldTransformer.transform(fields, definition.getName()));
 
-        String content = templateEngine.render("projection.mustache", context);
+        String content = templateEngine.render("presentation/projection.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "Projection.java", content);
     }
 }

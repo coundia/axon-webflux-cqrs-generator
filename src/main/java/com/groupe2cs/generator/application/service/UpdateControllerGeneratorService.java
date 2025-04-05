@@ -37,7 +37,7 @@ public class UpdateControllerGeneratorService {
         var fields = definition.getFields();
         context.put("fields", FieldTransformer.transform(fields, definition.getName()));
 
-        String content = templateEngine.render("updateController.mustache", context);
+        String content = templateEngine.render("presentation/updateController.mustache", context);
         fileWriterService.write(outputDir, "Update" + definition.getName() + "Controller.java", content);
     }
 }

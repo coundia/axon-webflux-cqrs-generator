@@ -43,7 +43,7 @@ public class ControllerGeneratorService {
                 .orElseThrow(() -> new RuntimeException("No ID field found"));
         context.put("idType", idField.getType());
 
-        String content = templateEngine.render("controller.mustache", context);
+        String content = templateEngine.render("presentation/controller.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "Controller.java", content);
     }
 }

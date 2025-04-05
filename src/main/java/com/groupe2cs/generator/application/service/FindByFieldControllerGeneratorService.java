@@ -46,7 +46,7 @@ public class FindByFieldControllerGeneratorService {
             fieldContext.put("field", field);
             String className = "FindBy" + capitalize(field.getName()) + definition.getName() + "Controller";
             fieldContext.put("className", className);
-            String content = templateEngine.render("findByFieldController.mustache", fieldContext);
+            String content = templateEngine.render("presentation/findByFieldController.mustache", fieldContext);
             fileWriterService.write(outputDir, className+".java", content);
         }
     }

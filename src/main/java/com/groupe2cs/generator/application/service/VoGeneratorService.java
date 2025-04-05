@@ -51,7 +51,7 @@ public class VoGeneratorService {
                 imports.add("java.util.Date");
             }
             context.put("imports", imports);
-            String voCode = templateEngine.render("vo.mustache", context);
+            String voCode = templateEngine.render("domain/vo.mustache", context);
 
             fileWriterService.write(outputDir, voName + ".java", voCode);
         }

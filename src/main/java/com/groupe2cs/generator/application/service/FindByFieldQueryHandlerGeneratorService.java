@@ -51,7 +51,7 @@ public class FindByFieldQueryHandlerGeneratorService {
 
             context.put("imports", imports);
 
-            String content = templateEngine.render("findByFieldQueryHandler.mustache", context);
+            String content = templateEngine.render("application/findByFieldQueryHandler.mustache", context);
             fileWriterService.write(outputDir, className + ".java", content);
         }
     }

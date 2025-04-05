@@ -34,7 +34,7 @@ public class ListQueryGeneratorService {
         context.put("package", Utils.getPackage(outputDir));
         context.put("name", definition.getName());
 
-        String content = templateEngine.render("list-query.mustache", context);
+        String content = templateEngine.render("application/list-query.mustache", context);
         fileWriterService.write(outputDir, "List" + definition.getName() + "Query.java", content);
     }
 }

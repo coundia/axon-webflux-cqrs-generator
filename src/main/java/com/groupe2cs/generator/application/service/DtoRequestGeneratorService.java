@@ -35,7 +35,7 @@ public class DtoRequestGeneratorService {
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
         context.put("imports", imports);
 
-        String content = templateEngine.render("dtoRequest.mustache", context);
+        String content = templateEngine.render("application/dtoRequest.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "Request.java", content);
     }
 }

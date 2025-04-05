@@ -40,7 +40,7 @@ public class FindByFieldQueryGeneratorService {
             String className = "FindBy" + field.getNameCapitalized() + definition.getName() + "Query";
             context.put("className", className);
 
-            String content = templateEngine.render("findByFieldQuery.mustache", context);
+            String content = templateEngine.render("application/findByFieldQuery.mustache", context);
             fileWriterService.write(outputDir, className + ".java", content);
         }
     }

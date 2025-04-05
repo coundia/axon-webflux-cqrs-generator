@@ -29,7 +29,7 @@ public class PagedResponseGeneratorService {
         context.put("package", Utils.getPackage(outputDir));
         context.put("name", definition.getName());
 
-        String content = templateEngine.render("pagedResponse.mustache", context);
+        String content = templateEngine.render("application/pagedResponse.mustache", context);
         fileWriterService.write(outputDir, definition.getName()+"PagedResponse.java", content);
     }
 }

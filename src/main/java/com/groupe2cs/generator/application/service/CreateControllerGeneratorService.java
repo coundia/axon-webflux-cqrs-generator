@@ -36,7 +36,7 @@ public class CreateControllerGeneratorService {
         var fields = definition.getFields();
         context.put("fields", FieldTransformer.transform(fields, definition.getName()));
 
-        String content = templateEngine.render("createController.mustache", context);
+        String content = templateEngine.render("presentation/createController.mustache", context);
         fileWriterService.write(outputDir, "Add" + definition.getName() + "Controller.java", content);
     }
 }

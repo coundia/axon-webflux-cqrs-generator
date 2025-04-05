@@ -50,7 +50,7 @@ public class ListQueryHandlerGeneratorService {
 
         context.put("imports", imports);
 
-        String content = templateEngine.render("list-query-handler.mustache", context);
+        String content = templateEngine.render("application/list-query-handler.mustache", context);
         fileWriterService.write(outputDir, "List" + definition.getName() + "QueryHandler.java", content);
     }
 }

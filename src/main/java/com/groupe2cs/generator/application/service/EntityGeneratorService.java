@@ -43,7 +43,7 @@ public class EntityGeneratorService {
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
         context.put("imports", imports);
 
-        String content = templateEngine.render("entity.mustache", context);
+        String content = templateEngine.render("infrastructure/entity.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + ".java", content);
     }
 }

@@ -50,7 +50,7 @@ public class CommandGeneratorService {
         context.put("imports", imports);
 
         context.put("name", prefix + definition.getName());
-        String content = templateEngine.render("command.mustache", context);
+        String content = templateEngine.render("application/command.mustache", context);
         fileWriterService.write(outputDir, prefix + definition.getName() + "Command.java", content);
     }
 }

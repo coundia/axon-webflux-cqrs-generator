@@ -43,7 +43,7 @@ public class FindByFieldProjectionGeneratorService {
             String className = "FindBy" + field.getNameCapitalized() + definition.getName() + "Projection";
             context.put("className", className);
 
-            String content = templateEngine.render("findByFieldProjection.mustache", context);
+            String content = templateEngine.render("presentation/findByFieldProjection.mustache", context);
             fileWriterService.write(outputDir, className + ".java", content);
         }
     }

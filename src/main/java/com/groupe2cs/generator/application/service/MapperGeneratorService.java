@@ -42,7 +42,7 @@ public class MapperGeneratorService {
 
         context.put("imports", imports);
 
-        String content = templateEngine.render("mapper.mustache", context);
+        String content = templateEngine.render("application/mapper.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "Mapper.java", content);
     }
 }

@@ -33,7 +33,7 @@ public class FindByIdentifyControllerGeneratorService {
         context.put("dtoPackage", Utils.getPackage(baseDir + "/" + generatorProperties.getDtoPackage()));
         context.put("identifier", definition.getIdentifier());
 
-        String content = templateEngine.render("findByIdentifyController.mustache", context);
+        String content = templateEngine.render("presentation/findByIdentifyController.mustache", context);
         fileWriterService.write(outputDir, "FindBy" + capitalize(definition.getIdentifier()) + definition.getName() + "Controller.java", content);
     }
 

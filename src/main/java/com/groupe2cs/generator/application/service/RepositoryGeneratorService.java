@@ -43,7 +43,7 @@ public class RepositoryGeneratorService {
 
         context.put("filables", filables);
 
-        String content = templateEngine.render("repository.mustache", context);
+        String content = templateEngine.render("infrastructure/repository.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + "Repository.java", content);
     }
 }

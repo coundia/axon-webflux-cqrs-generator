@@ -32,7 +32,7 @@ public class QueryGeneratorService {
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + "." + definition.getName() + "Id");
         context.put("imports", imports);
 
-        String content = templateEngine.render("query.mustache", context);
+        String content = templateEngine.render("application/query.mustache", context);
         fileWriterService.write(outputDir, "Get" + definition.getName() + "Queries.java", content);
     }
 }

@@ -36,7 +36,7 @@ public class HandlerGeneratorService {
         var fields = definition.getFields();
         context.put("fields", FieldTransformer.transform(fields, definition.getName()));
 
-        String content = templateEngine.render("createCommandHandler.mustache", context);
+        String content = templateEngine.render("application/createCommandHandler.mustache", context);
         fileWriterService.write(outputDir, "Create" + definition.getName() + "CommandHandler.java", content);
     }
 }
