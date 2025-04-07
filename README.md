@@ -31,13 +31,14 @@ curl -N -X POST http://localhost:8070/api/v1/generator/all \
   -H "Content-Type: application/json" \
   -H "Accept: application/x-ndjson" \
   -d '{
-    "outputDir": "target/generated",
+    "outputDir": "/Users/pcoundia/projects/spring-axon-rabbitmq-webflux-starter/src/main/java/com/pcoundia/sales",
     "definition": {
-      "name": "Product",
+      "name": "Sale",
+      "table": "sales",
       "fields": [
         { "name": "id", "type": "String" },
-        { "name": "name", "type": "String" },
-        { "name": "price", "type": "Double" }
+        { "name": "quantity", "type": "Integer" },
+        { "name": "total_price", "type": "Double" }
       ]
     }
   }'
