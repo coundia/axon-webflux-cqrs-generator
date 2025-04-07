@@ -45,6 +45,8 @@ public class EventGeneratorService {
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
         context.put("imports", imports);
 
+        context.put("isDeleted", eventType.equalsIgnoreCase("Deleted"));
+
         String content = templateEngine.render("domain/event.mustache", context);
         fileWriterService.write(outputDir, definition.getName() + eventType + "Event.java", content);
     }

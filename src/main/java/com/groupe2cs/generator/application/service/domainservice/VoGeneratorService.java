@@ -45,10 +45,12 @@ public class VoGeneratorService {
             context.put("type", field.getType());
             context.put("name", field.getName());
             context.put("equalsExpression", "this." + field.getName() + ".equals(that." + field.getName() + ")");
-            context.put("hashCodeExpression", field.getName() + ".hashCode()");
+            context.put("hashCodeExpression", "java.util.Objects.hash("+field.getName()+")");
 
             if (field.isDate()) {
                 imports.add("java.util.Date");
+                imports.add("com.fasterxml.jackson.annotation.JsonCreator");
+                imports.add("com.fasterxml.jackson.annotation.JsonProperty");
             }
             context.put("imports", imports);
             String voCode = templateEngine.render("domain/vo.mustache", context);

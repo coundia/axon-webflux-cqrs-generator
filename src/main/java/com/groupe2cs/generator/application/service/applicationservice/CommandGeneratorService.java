@@ -41,6 +41,7 @@ public class CommandGeneratorService {
         String outputDir = baseDir + "/" + generatorProperties.getCommandPackage();
         context.put("package", Utils.getPackage(outputDir));
         context.put("commandType", prefix);
+        context.put("entity", definition.getName());
 
         var fields = definition.getFields();
         context.put("fields", FieldTransformer.transform(fields, definition.getName()));
@@ -48,6 +49,8 @@ public class CommandGeneratorService {
         Set<String> imports = new LinkedHashSet<>();
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
         context.put("imports", imports);
+
+        context.put("isDeleted", prefix.equalsIgnoreCase("Delete"));
 
         context.put("name", prefix + definition.getName());
         String content = templateEngine.render("application/command.mustache", context);

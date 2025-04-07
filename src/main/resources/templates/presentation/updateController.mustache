@@ -8,6 +8,11 @@ import {{commandPackage}}.Update{{name}}Command;
 import {{dtoPackage}}.{{name}}Request;
 import {{dtoPackage}}.{{name}}Response;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -19,7 +24,7 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/v1/commands/{{nameLowercase}}")
-@Tag(name = "{{name}} Controller", description = "Endpoints for managing {{nameLowercase}}s")
+@Tag(name = "{{name}} commands", description = "Endpoints for managing {{nameLowercase}}s")
 @Slf4j
 public class Update{{name}}Controller {
 
@@ -30,9 +35,40 @@ this.commandGateway = commandGateway;
 }
 
 @PutMapping("/{id}")
-@Operation(summary = "Update an existing {{nameLowercase}}", description = "Updates a {{nameLowercase}} and returns the updated entity")
-public CompletableFuture<ResponseEntity<{{name}}Response>> update{{name}}(@PathVariable String id, @RequestBody {{name}}Request {{nameLowercase}}Request) {
+@Operation(
+summary = "Update an existing {{nameLowercase}}",
+description = "Updates an existing {{nameLowercase}} by ID and returns the updated entity"
+)
+@ApiResponses(value = {
+@ApiResponse(
+responseCode = "200",
+description = "{{name}} updated successfully",
+content = @Content(mediaType = "application/json", schema = @Schema(implementation = {{name}}Response.class))
+),
+@ApiResponse(
+responseCode = "400",
+description = "Invalid input data",
+content = @Content
+),
+@ApiResponse(
+responseCode = "500",
+description = "Internal server error",
+content = @Content
+)
+})
+public CompletableFuture<ResponseEntity<{{name}}Response>> update{{name}}(
+	@Parameter(description = "The ID of the {{nameLowercase}} to update", required = true)
+	@PathVariable String id,
+
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(
+	description = "{{name}} data to update",
+	required = true,
+	content = @Content(schema = @Schema(implementation = {{name}}Request.class))
+	)
+	@RequestBody {{name}}Request {{nameLowercase}}Request
+	) {
 	Update{{name}}Command update{{name}}Command = {{name}}Mapper.toUpdateCommand({{nameLowercase}}Request);
+
 	return commandGateway.send(update{{name}}Command)
 	.thenApply(res -> {
 	log.info("{{name}} updated successfully with ID: {}", id);
@@ -48,4 +84,4 @@ public CompletableFuture<ResponseEntity<{{name}}Response>> update{{name}}(@PathV
 	return ResponseEntity.internalServerError().build();
 	});
 	}
-	}
+}

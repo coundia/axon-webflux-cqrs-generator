@@ -19,7 +19,10 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @Builder
 public class {{name}}Command implements Serializable{
 @TargetAggregateIdentifier
-{{#fields}}  private  {{type}} {{name}};
+{{#fields}}
+	{{^isDeleted}}private {{type}} {{name}};{{/isDeleted}}
 {{/fields}}
+
+{{#isDeleted}}private {{entity}}Id id;{{/isDeleted}}
 
 }

@@ -5,12 +5,20 @@ import {{.}};
 {{/imports}}
 
 import java.io.Serializable;
-import lombok.Value;
 
-@Value
+import lombok.Getter;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Builder
 public class {{voName}} implements Serializable {
 
-private final {{type}} {{name}};
+private {{type}} {{name}};
 
 public {{voName}}({{type}} {{name}}) {
 this.{{name}} = {{name}};

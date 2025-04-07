@@ -34,15 +34,14 @@ apply(new {{name}}CreatedEvent(
 }
 
 @CommandHandler
-public {{name}}Aggregate(Delete{{name}}Command command) {
-apply(new {{name}}DeletedEvent(
-{{#fields}}		command.get{{nameCapitalized}}(){{^last}},{{/last}}
-{{/fields}}
-));
+public void handle(Delete{{name}}Command command) {
+	apply(new {{name}}DeletedEvent(
+		command.getId()
+	));
 }
 
 @CommandHandler
-public {{name}}Aggregate(Update{{name}}Command command) {
+public void handle(Update{{name}}Command command) {
 apply(new {{name}}UpdatedEvent(
 {{#fields}}		command.get{{nameCapitalized}}(){{^last}},{{/last}}
 {{/fields}}
@@ -57,4 +56,19 @@ public void on({{name}}CreatedEvent event) {
 		{{/isId}}
 	{{/fields}}
 }
+
+@EventSourcingHandler
+public void on({{name}}DeletedEvent event) {
+this.id = event.getId();
+}
+
+@EventSourcingHandler
+public void on({{name}}UpdatedEvent event) {
+this.id = event.getId();
+{{#fields}}
+	{{^isId}}	this.{{name}} = event.get{{nameCapitalized}}();
+	{{/isId}}
+{{/fields}}
+}
+
 }
