@@ -4,6 +4,7 @@ package {{package}};
 import {{.}};
 {{/imports}}
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class List{{entity}}QueryHandler {
@@ -15,7 +16,7 @@ this.{{entityLower}}Repository = {{entityLower}}Repository;
 }
 
 @QueryHandler
-public Mono<{{entity}}PagedResponse> handle(List{{entity}}Query query) {
+public CompletableFuture<{{entity}}PagedResponse> handle(List{{entity}}Query query) {
 	int limit = query.getLimit();
 	int offset = (query.getPage() * query.getLimit());
 
@@ -35,6 +36,6 @@ public Mono<{{entity}}PagedResponse> handle(List{{entity}}Query query) {
 			tuple.getT2(),
 			tuple.getT2()/query.getLimit()
 			);
-	});
+	}).toFuture();
 }
 }

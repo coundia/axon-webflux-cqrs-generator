@@ -8,7 +8,9 @@ import com.groupe2cs.generator.shared.Utils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class FindByIdentifyControllerGeneratorService {
@@ -32,6 +34,10 @@ public class FindByIdentifyControllerGeneratorService {
         context.put("queryPackage", Utils.getPackage(baseDir + "/" + generatorProperties.getQueryPackage()));
         context.put("dtoPackage", Utils.getPackage(baseDir + "/" + generatorProperties.getDtoPackage()));
         context.put("identifier", definition.getIdentifier());
+
+        Set<String> imports = new LinkedHashSet<>();
+        imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
+        context.put("imports", imports);
 
         String content = templateEngine.render("presentation/findByIdentifyController.mustache", context);
         fileWriterService.write(outputDir, "FindBy" + capitalize(definition.getIdentifier()) + definition.getName() + "Controller.java", content);

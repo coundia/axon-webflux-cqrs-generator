@@ -11,7 +11,8 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import reactor.core.publisher.Mono;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -28,13 +29,12 @@ this.queryGateway = queryGateway;
 
 @GetMapping("/by-{{field.name}}")
 @Operation(summary = "Find {{nameLowercase}} by {{field.name}}", description = "Returns a {{nameLowercase}} based on the {{field.name}}")
-public CompletableFuture<ResponseEntity<{{name}}Response>> findBy{{field.nameCapitalized}}(@RequestParam String {{field.name}}) {
-	FindBy{{field.nameCapitalized}}{{name}}Query query = new FindBy{{field.nameCapitalized}}{{name}}Query({{field.name}});
-	return queryGateway.query(query, {{name}}Response.class)
-	.thenApply(ResponseEntity::ok)
-	.exceptionally(ex -> {
-	log.error("Failed to find {{nameLowercase}} by {{field.name}}: {}", ex.getMessage());
-	return ResponseEntity.internalServerError().build();
-	});
+public Mono<List<{{name}}Response>> findBy{{field.nameCapitalized}}(@RequestParam String {{field.name}}) {
+
+	{{name}}{{field.nameCapitalized}} {{field.name}}Vo = {{name}}{{field.nameCapitalized}}.create({{field.name}});
+	FindBy{{field.nameCapitalized}}{{name}}Query query = new FindBy{{field.nameCapitalized}}{{name}}Query({{field.name}}Vo);
+	return Mono.fromFuture(queryGateway.query(query,
+	org.axonframework.messaging.responsetypes.ResponseTypes.multipleInstancesOf({{name}}Response.class)
+	));
 	}
 	}

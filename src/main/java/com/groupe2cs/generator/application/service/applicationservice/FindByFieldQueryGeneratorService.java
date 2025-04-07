@@ -8,7 +8,9 @@ import com.groupe2cs.generator.shared.Utils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class FindByFieldQueryGeneratorService {
@@ -39,6 +41,12 @@ public class FindByFieldQueryGeneratorService {
 
             String className = "FindBy" + field.getNameCapitalized() + definition.getName() + "Query";
             context.put("className", className);
+
+            Set<String> imports = new LinkedHashSet<>();
+            imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
+            imports.add("reactor.core.publisher.Flux");
+
+            context.put("imports",imports);
 
             String content = templateEngine.render("application/findByFieldQuery.mustache", context);
             fileWriterService.write(outputDir, className + ".java", content);

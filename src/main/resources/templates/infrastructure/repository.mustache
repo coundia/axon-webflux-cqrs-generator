@@ -23,7 +23,7 @@ Mono<Integer> updateAllById({{#fields}}{{type}} {{name}} {{^last}}, {{/last}} {{
 
 {{#filables}}
 @Query("SELECT * FROM {{tableName}} where {{name}} = :{{name}}")
-Flux<{{entityName}}> findByField{{nameCapitalized}}(String {{name}});
+Flux<{{entityName}}> getBy{{nameCapitalized}}(String {{name}});
 
 {{/filables}}
 

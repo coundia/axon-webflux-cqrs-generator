@@ -33,6 +33,22 @@ apply(new {{name}}CreatedEvent(
 ));
 }
 
+@CommandHandler
+public {{name}}Aggregate(Delete{{name}}Command command) {
+apply(new {{name}}DeletedEvent(
+{{#fields}}		command.get{{nameCapitalized}}(){{^last}},{{/last}}
+{{/fields}}
+));
+}
+
+@CommandHandler
+public {{name}}Aggregate(Update{{name}}Command command) {
+apply(new {{name}}UpdatedEvent(
+{{#fields}}		command.get{{nameCapitalized}}(){{^last}},{{/last}}
+{{/fields}}
+));
+}
+
 @EventSourcingHandler
 public void on({{name}}CreatedEvent event) {
 	this.id = event.getId();

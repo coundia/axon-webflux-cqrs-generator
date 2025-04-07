@@ -47,6 +47,7 @@ public class FindByFieldQueryHandlerGeneratorService {
 
             Set<String> imports = new LinkedHashSet<>();
             imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getMapperPackage()) + ".*");
+            imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
             imports.add("reactor.core.publisher.Flux");
 
             context.put("imports", imports);

@@ -32,6 +32,7 @@ public class ListControllerGeneratorService {
         Set<String> imports = new LinkedHashSet<>();
         imports.add(Utils.getPackage(baseDir + "/" + properties.getDtoPackage()) + "." + definition.getName() + "Response");
         imports.add(Utils.getPackage(baseDir + "/" + properties.getQueryPackage()) + ".List" + definition.getName() + "Query");
+        imports.add(Utils.getPackage(baseDir + "/" + properties.getDtoPackage()+".*"));
 
         context.put("imports", imports);
 

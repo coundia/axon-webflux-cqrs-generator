@@ -29,7 +29,9 @@ this.queryGateway = queryGateway;
 @GetMapping("/{id}")
 @Operation(summary = "Find {{nameLowercase}} by {{identifier.name}}", description = "Returns a {{nameLowercase}} based on the identifier")
 public CompletableFuture<ResponseEntity<{{name}}Response>> findBy{{identifier.nameCapitalized}}(@PathVariable String id) {
-	FindBy{{identifier.nameCapitalized}}{{name}}Query query = new FindBy{{identifier.nameCapitalized}}{{name}}Query(id);
+
+	{{name}}{{identifier.nameCapitalized}} idVo = {{identifier.nameCapitalized}}{{name}}.create(id);
+	FindBy{{identifier.nameCapitalized}}{{name}}Query query = new FindBy{{identifier.nameCapitalized}}{{name}}Query(idVo);
 	return queryGateway.query(query, {{name}}Response.class)
 	.thenApply(ResponseEntity::ok)
 	.exceptionally(ex -> {

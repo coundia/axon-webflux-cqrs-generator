@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/{{nameLower}}s")
+@RequestMapping("/api/v1/queries/list-{{nameLower}}")
 public class {{name}}ListController {
 
 private final QueryGateway queryGateway;
@@ -24,13 +24,13 @@ this.queryGateway = queryGateway;
 }
 
 @GetMapping
-public Mono<List<{{name}}Response>> list(
+public Mono<{{name}}PagedResponse> list(
 	@RequestParam(defaultValue = "0") int page,
 	@RequestParam(defaultValue = "10") int limit
 	) {
 	return Mono.fromFuture(queryGateway.query(
 	new List{{name}}Query(page,limit),
-	org.axonframework.messaging.responsetypes.ResponseTypes.multipleInstancesOf({{name}}Response.class)
+	org.axonframework.messaging.responsetypes.ResponseTypes.instanceOf({{name}}PagedResponse.class)
 	));
 	}
 }

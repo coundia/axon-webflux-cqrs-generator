@@ -5,7 +5,9 @@ import {{.}};
 {{/imports}}
 
 import java.io.Serializable;
+import lombok.Value;
 
+@Value
 public class {{voName}} implements Serializable {
 
 private final {{type}} {{name}};

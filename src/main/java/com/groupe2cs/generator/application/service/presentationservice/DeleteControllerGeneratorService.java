@@ -36,6 +36,9 @@ public class DeleteControllerGeneratorService {
         Set<String> imports = new LinkedHashSet<>();
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getMapperPackage()) + ".*");
         imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getVoPackage()) + ".*");
+        imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getExceptionPackage()) + ".*");
+        imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getDtoPackage()) + ".*");
+        imports.add(Utils.getPackage(baseDir + "/" + generatorProperties.getQueryPackage()) + ".*");
 
         context.put("imports", imports);
 
