@@ -46,3 +46,8 @@ curl -N -X POST http://localhost:8070/api/v1/generator/all \
 ```
 ## SEE
 [tests.http](docs/tests.http)
+
+⚠️ All rights reserved.
+
+This repository is publicly visible for demonstration purposes only.
+You may not use, copy, modify, or distribute any part of this code without explicit permission from the author.
